@@ -577,6 +577,8 @@
         <input type="hidden" name="applied_via" value="Careers page">
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none">
 
+        <p class="rvj-notice" role="status" hidden></p>
+
         <div class="fg">
           <label for="rvjRole">Role</label>
           <select id="rvjRole" name="role" required>
@@ -796,9 +798,13 @@
     });
   });
 
+  var notice = form.querySelector('.rvj-notice');
+
   function openModal(slug) {
     lastFocus = document.activeElement;
     setRole(slug);
+    notice.hidden = true;
+    notice.textContent = '';
     body.hidden = false;
     done.hidden = true;
     clearErrors();
@@ -906,8 +912,10 @@
     // Old flyer or mistyped link: still let them apply instead of showing nothing
     openModal('general-application');
     form.elements.applied_via.value = 'Direct link with unknown role (?role=' + slug + ')';
-    status.textContent = 'We couldn\'t find the role "' + slug + '". It may have closed. ' +
+    // Shown at the top of the form so it's the first thing they read
+    notice.textContent = 'We couldn\'t find the role "' + slug + '". It may have closed. ' +
       'You can send a general application below, or choose a role from the list.';
+    notice.hidden = false;
   }
 })();
 </script>
